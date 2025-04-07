@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.11"]
-        cuda_version: ["12.6"]
+        cuda_version: ["12.6.3"]
         torch_version: ["2.6.0"]
         torchvision_version: ["0.21.0"]
         torchaudio_version: ["2.6.0"]
@@ -30,9 +30,10 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install CUDA Toolkit ${{ matrix.cuda_version }}
-      uses: nvidia-github-action/setup-cuda@v2
+      uses: Jimver/cuda-toolkit@master
+      id: cuda-toolkit
       with:
-        cuda-version: ${{ matrix.cuda_version }}
+        cuda: ${{ matrix.cuda_version }}
 
     - name: Install build tools and dependencies (GCC >= 11)
       run: |
