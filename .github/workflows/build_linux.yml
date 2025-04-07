@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11"]
+        python-version: ["3.12"]
         cuda_version: ["12.6.3"]
         torch_version: ["2.6.0"]
         torchvision_version: ["0.21.0"]
@@ -19,6 +19,22 @@ jobs:
         cuda_suffix: ["cu126"] 
 
     steps:
+    - name: Free Disk Space (Ubuntu)
+      uses: jlumbroso/free-disk-space@main
+      with:
+        # this might remove tools that are actually needed,
+        # if set to "true" but frees about 6 GB
+        tool-cache: true
+        
+        # all of these default to true, but feel free to set to
+        # "false" if necessary for your workflow
+        android: true
+        dotnet: true
+        haskell: true
+        large-packages: true
+        docker-images: true
+        swap-storage: true
+        
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
@@ -46,15 +62,11 @@ jobs:
 
     - name: Install PyTorch ${{ matrix.torch_version }} (CUDA ${{ matrix.cuda_version }})
       run: |
-        # Construct the correct PyTorch installation command
-        # Ensure the CUDA suffix matches available wheels for the toolkit version
         pip install torch==${{ matrix.torch_version }} torchvision==${{ matrix.torchvision_version }} torchaudio==${{ matrix.torchaudio_version }} --index-url https://download.pytorch.org/whl/${{ matrix.cuda_suffix }}
 
     - name: Install Nunchaku dependencies
       run: |
         pip install diffusers transformers accelerate sentencepiece protobuf huggingface_hub
-        # Install optional dependencies if needed for tests or specific features
-        # pip install peft opencv-python gradio spaces GPUtil
 
     - name: Build Nunchaku wheels
       run: |
