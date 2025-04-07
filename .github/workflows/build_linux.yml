@@ -77,7 +77,7 @@ jobs:
         NUNCHAKU_INSTALL_MODE=ALL NUNCHAKU_BUILD_WHEELS=1 python -m build --wheel --no-isolation
       env:
         CUDA_HOME: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}
-        MAX_JOBS: 2
+        MAX_JOBS: 1
 
     - name: List built wheels
       run: ls -l dist/
