@@ -31,8 +31,8 @@ jobs:
         android: true
         dotnet: true
         haskell: true
-        large-packages: true
-        docker-images: true
+        large-packages: false
+        docker-images: false
         swap-storage: true
         
     - name: Checkout repository
@@ -76,7 +76,7 @@ jobs:
         echo "Building wheels with NUNCHAKU_INSTALL_MODE=ALL..."
         NUNCHAKU_INSTALL_MODE=ALL NUNCHAKU_BUILD_WHEELS=1 python -m build --wheel --no-isolation
       env:
-        CUDA_HOME: /usr/local/cuda-${{ matrix.cuda_version }}
+        CUDA_HOME: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}
 
     - name: List built wheels
       run: ls -l dist/
