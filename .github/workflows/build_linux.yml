@@ -6,10 +6,10 @@ on:
 jobs:
   build_linux:
     name: Build Linux Wheels (CUDA ${{ matrix.cuda_version }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         python-version: ["3.12"]
         cuda_version: ["12.6.3"]
